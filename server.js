@@ -11,20 +11,18 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("public"));
 
-//PORT
+//PORT and Routes
 const PORT = process.env.PORT || 8080;
-
-//Routes
 app.use(require("./routes/html-routes"));
 app.use(require("./routes/api-routes"));
 
 //Listener
-mongoose.connect("mongodb://localhost/workout", {
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/workout";
+mongoose.connect(MONGODB_URI, {
   useNewUrlParser: true,
   useFindAndModify: false,
   useUnifiedTopology: true,
 });
-
 mongoose.connection
   .once("open", () => console.log(chalk.green.bold("Connected to Mongoose")))
   .on("error", (error) => {
