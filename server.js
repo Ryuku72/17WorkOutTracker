@@ -1,23 +1,35 @@
+//NPM Packages
 const express = require('express');
 const chalk = require('chalk')
-
-
-const PORT = process.env.PORT || 8080;
+const mongoose = require('mongoose')
 const app = express();
-// const MONGODB_URI = process.env.MONGODB_URI || "mongo://localhost/workout";
 
-//middleware
+//Mongoose
+const logger = require('morgan');
+app.use(logger('dev'));
+
+//Express Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.static("public"));
+app.use(express.static('public'));
+
+//PORT
+const PORT = process.env.PORT || 8080;
 
 //Routes
-require('./routes/htmlroutes')(app)
+app.use(require('./routes/html-routes'))
 
-// //connect to the Mongo DB
-// mongoose.connect(MONGODB_URI);
+//Listener
+mongoose.connect('mongodb://localhost/workout', {
+  useNewUrlParser: true,
+  useFindAndModify: false
+});
 
-//listener
+mongoose.connection
+.once('open', () => console.log(chalk.green.bold('Connected to Mongoose')))
+.on('error', error => {
+    console.log(chalk.red('Your Error: ', error))
+})
 app.listen(PORT, function() {
-  console.log(chalk.blue.bold("Access Point || PORT: ") + chalk.yellow.bold(PORT));
+  console.log(chalk.blue.bold('Access Granted || PORT: ') + chalk.yellow.bold(PORT));
   });
