@@ -4,6 +4,7 @@ const app = express();
 const chalk = require("chalk");
 const mongoose = require("mongoose");
 const logger = require("morgan");
+const exphbs = require("express-handlebars");
 
 //Middleware
 app.use(logger("dev"));
@@ -16,6 +17,11 @@ const PORT = process.env.PORT || 8080;
 app.use(require("./routes/html-routes"));
 app.use(require("./routes/api-routes"));
 
+// Set Handlebars
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
+
+
 //Listener
 const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/workout";
 mongoose.connect(MONGODB_URI, {
@@ -24,7 +30,7 @@ mongoose.connect(MONGODB_URI, {
   useUnifiedTopology: true,
 });
 mongoose.connection
-  .once("open", () => console.log(chalk.green.bold("Connected to Mongoose")))
+  .once("open", () => console.log(chalk.magentaBright("Connected to Mongoose")))
   .on("error", (error) => {
     console.log(chalk.red("Your Error: ", error));
   });

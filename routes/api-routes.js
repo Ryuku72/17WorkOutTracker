@@ -29,8 +29,8 @@ router.post("/api/workouts", (req, res) => {
 //Continue WorkOut for previous ID
 router.put("/api/workouts/:id", function (req, res) {
   //only works for continue workout
-  console.log(req.params.id); // userID
-  console.log(req.body); // the exercise choices
+  //console.log(req.params.id); // userID
+  //console.log(req.body) // the exercise choices
   db.Workout.findOneAndUpdate(
     { _id: req.params.id },
     { $push: { exercises: req.body } },
