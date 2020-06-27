@@ -1,10 +1,10 @@
 //NPM Packages
 const express = require("express");
-const app = express();
 const chalk = require("chalk");
 const mongoose = require("mongoose");
 const logger = require("morgan");
 const exphbs = require("express-handlebars");
+const app = express();
 
 //Middleware
 app.use(logger("dev"));
@@ -20,7 +20,6 @@ app.use(require("./routes/api-routes"));
 // Set Handlebars
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
-
 
 //Listener
 const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/workout";
